@@ -26,18 +26,18 @@ $ sudo mv composer.phar /usr/local/bin/composer
 Add the following to your require block in `composer.json` config
 
 ```
-"php-tmdb/laravel": "~1.0"
+"dariusIII/tmdb-laravel": "~1.0"
 ```
 
 or just run the following command in your project:
 
 ```
-composer require php-tmdb/laravel
+composer require dariusiii/tmdb-laravel
 ```
 
 ## Configuration
 
-Add to your `app/config/app.php` (Laravel 4) or `config/app.php` (Laravel <5.5) the service provider:
+Add `config/app.php` (Laravel <5.5) the service provider:
 
 ```php
 'providers' => array(
@@ -48,12 +48,6 @@ Add to your `app/config/app.php` (Laravel 4) or `config/app.php` (Laravel <5.5) 
 ```
 
 Then publish the configuration file:
-
-### Laravel 4
-
-```
-php artisan config:publish php-tmdb/laravel
-```
 
 ### Laravel 5
 
@@ -169,15 +163,6 @@ class WelcomeController extends Controller {
 ```
 
 The `Configuration` used by the `Tmdb\Helper\ImageHelper` is automatically loaded by the IoC container.
-If you are a Laravel 5.1 user you could also use the blade's `@inject` functionality,
-
-```
-@inject('image', 'Tmdb\Helper\ImageHelper')
-
-@foreach ($movies as $movie)
-    {!! $image->getHtml($movie->getPosterImage(), 'w154', 260, 420) !!}
-@endforeach
-```
 
 ### Registering plugins
 
