@@ -11,15 +11,16 @@
 
 namespace Tmdb\Laravel\Adapters\Tests;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Prophecy\Prophecy\MethodProphecy;
 
-abstract class AbstractEventDispatcherTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractEventDispatcherTest extends TestCase
 {
-    const EVENT = 'foo';
+    public const EVENT = 'foo';
 
     /**
      * @var EventDispatcher
@@ -41,7 +42,7 @@ abstract class AbstractEventDispatcherTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_dispatches_events_through_both_laravel_and_symfony()
     {
-        $this->laravel->fire(static::EVENT, null)->shouldBeCalled();
+        $this->laravel->dispatch(static::EVENT, null)->shouldBeCalled();
         $this->symfony->dispatch(static::EVENT, null)->shouldBeCalled();
 
         $this->dispatcher->dispatch(static::EVENT);
@@ -50,8 +51,8 @@ abstract class AbstractEventDispatcherTest extends \PHPUnit_Framework_TestCase
     /** @test */
     public function it_returns_the_event_returned_by_the_symfony_dispatcher()
     {
-        $this->symfony->dispatch(static::EVENT, null)->willReturn('bar');
-        $this->assertEquals('bar', $this->dispatcher->dispatch(static::EVENT));
+        $this->symfony->dispatch(static::EVENT, null)->willReturn('foo');
+        $this->assertEquals('foo', $this->dispatcher->dispatch(static::EVENT));
     }
 
     /** @test */
@@ -90,8 +91,8 @@ abstract class AbstractEventDispatcherTest extends \PHPUnit_Framework_TestCase
      */
     public function it_gets_listeners_from_the_symfony_dispatcher()
     {
-        $this->symfony->getListeners(static::EVENT)->willReturn(['bar']);
-        $this->assertEquals(['bar'], $this->dispatcher->getListeners(static::EVENT));
+        $this->symfony->getListeners(static::EVENT)->willReturn(['foo']);
+        $this->assertEquals(['foo'], $this->dispatcher->getListeners(static::EVENT));
     }
 
     /** @test */

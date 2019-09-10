@@ -37,17 +37,17 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      * @param string $eventName The name of the event to dispatch. The name of
      *                          the event is the name of the method that is
      *                          invoked on listeners.
-     * @param Event  $event     The event to pass to the event handlers/listeners.
+     * @param Event $event The event to pass to the event handlers/listeners.
      *                          If not supplied, an empty Event instance is created.
      *
-     * @return Event
+     * @return void
      *
      * @api
      */
     public function dispatch($eventName, Event $event = null)
     {
         $this->laravelDispatcher->dispatch($eventName, $event);
-        return $this->symfonyDispatcher->dispatch($eventName, $event);
+        $this->symfonyDispatcher->dispatch($eventName, $event);
     }
 
     /**

@@ -7,7 +7,6 @@
 namespace Tmdb\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use Tmdb\Laravel\TmdbServiceProviderLaravel4;
 use Tmdb\Laravel\TmdbServiceProviderLaravel5;
 use Tmdb\ApiToken;
 use Tmdb\Client;
@@ -99,9 +98,7 @@ class TmdbServiceProvider extends ServiceProvider
         $app = $this->app;
 
         // Pick the correct service provider for the current verison of Laravel
-        $this->provider = (version_compare($app::VERSION, '5.0', '<'))
-            ? new TmdbServiceProviderLaravel4($app)
-            : new TmdbServiceProviderLaravel5($app);
+        $this->provider = new TmdbServiceProviderLaravel5($app);
     }
 
     /**
