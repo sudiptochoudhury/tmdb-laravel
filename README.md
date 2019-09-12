@@ -26,7 +26,7 @@ $ sudo mv composer.phar /usr/local/bin/composer
 Add the following to your require block in `composer.json` config
 
 ```
-"dariusiii/tmdb-laravel": "~1.0"
+"dariusiii/tmdb-laravel": "^2.0"
 ```
 
 or just run the following command in your project:
