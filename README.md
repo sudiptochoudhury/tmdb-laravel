@@ -3,7 +3,6 @@
 [![License](https://poser.pugx.org/dariusiii/tmdb-laravel/license.png)](https://packagist.org/packages/dariusiii/tmdb-laravel)
 [![Build Status](https://travis-ci.org/dariusiii/tmdb-laravel.svg)](https://travis-ci.org/dariusiii/tmdb-laravel)
 [![Code Coverage](https://scrutinizer-ci.com/g/dariusiii/tmdb-laravel/badges/coverage.png)](https://scrutinizer-ci.com/g/dariusiii/tmdb-laravel/)
-[![PHP & HHVM](https://php-eye.com/badge/dariusiii/tmdb-laravel/tested.svg)](https://php-eye.com/package/dariusiii/tmdb-laravel)
 
 A Laravel package that provides easy access to the [php-tmdb/api](https://github.com/php-tmdb/api) TMDB (The Movie Database) API wrapper.
 This package comes with a service provider that configures the `Tmdb\Client` and registers it to the IoC container.
@@ -11,7 +10,6 @@ Both Laravel 5 and 6 are supported.
 
 [![Latest Stable Version](https://poser.pugx.org/dariusiii/tmdb-laravel/v/stable.svg)](https://packagist.org/packages/dariusiii/tmdb-laravel)
 [![Latest Unstable Version](https://poser.pugx.org/dariusiii/tmdb-laravel/v/unstable.svg)](https://packagist.org/packages/dariusiii/tmdb-laravel)
-[![Dependency Status](https://www.versioneye.com/php/php-tmdb:laravel/badge?style=flat)](https://www.versioneye.com/php/php-tmdb:laravel)
 [![Total Downloads](https://poser.pugx.org/dariusiii/tmdb-laravel/downloads.svg)](https://packagist.org/packages/dariusiii/tmdb-laravel)
 
 ## Installation
