@@ -32,7 +32,7 @@ abstract class AbstractEventDispatcherTest extends TestCase
 
     private $listener;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dispatcher = $this->createEventDispatcher();
     }
@@ -46,13 +46,6 @@ abstract class AbstractEventDispatcherTest extends TestCase
         $this->symfony->dispatch(static::EVENT, null)->shouldBeCalled();
 
         $this->dispatcher->dispatch(static::EVENT);
-    }
-
-    /** @test */
-    public function it_returns_the_event_returned_by_the_symfony_dispatcher()
-    {
-        $this->symfony->dispatch(static::EVENT, null)->willReturn('foo');
-        $this->assertEquals('foo', $this->dispatcher->dispatch(static::EVENT));
     }
 
     /** @test */

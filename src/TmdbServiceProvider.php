@@ -10,6 +10,11 @@ use Illuminate\Support\ServiceProvider;
 use Tmdb\Laravel\TmdbServiceProviderLaravel5;
 use Tmdb\ApiToken;
 use Tmdb\Client;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Tmdb\Laravel\Adapters\EventDispatcherAdapter;
+use Tmdb\Model\Configuration;
+use Tmdb\Repository\ConfigurationRepository;
 
 class TmdbServiceProvider extends ServiceProvider
 {
@@ -64,17 +69,17 @@ class TmdbServiceProvider extends ServiceProvider
 
         // Let the IoC container be able to make a Symfony event dispatcher
         $this->app->bind(
-            'Symfony\Component\EventDispatcher\EventDispatcherInterface',
-            'Symfony\Component\EventDispatcher\EventDispatcher'
+            EventDispatcherInterface::class,
+            EventDispatcher::class
         );
 
         // Setup default configurations for the Tmdb Client
-        $this->app->singleton('Tmdb\Client', function() {
+        $this->app->singleton(Client::class, function() {
             $config = $this->provider->config();
             $options = $config['options'];
 
             // Use an Event Dispatcher that uses the Laravel event dispatcher
-            $options['event_dispatcher'] = $this->app->make('Tmdb\Laravel\Adapters\EventDispatcherAdapter');
+            $options['event_dispatcher'] = $this->app->make(EventDispatcherAdapter::class);
 
             // Register the client using the key and options from config
             $token = new ApiToken($config['api_key']);
@@ -82,22 +87,18 @@ class TmdbServiceProvider extends ServiceProvider
         });
 
         // bind the configuration (used by the image helper)
-        $this->app->bind('Tmdb\Model\Configuration', function() {
-            $configuration = $this->app->make('Tmdb\Repository\ConfigurationRepository');
+        $this->app->bind(Configuration::class, function() {
+            $configuration = $this->app->make(ConfigurationRepository::class);
             return $configuration->load();
         });
     }
 
     /**
-     * Register the ServiceProvider according to Laravel version
-     *
-     * @return \Tmdb\Laravel\Provider\ProviderInterface
+     * Register the ServiceProvider
      */
     private function registerProvider()
     {
         $app = $this->app;
-
-        // Pick the correct service provider for the current verison of Laravel
         $this->provider = new TmdbServiceProviderLaravel5($app);
     }
 
