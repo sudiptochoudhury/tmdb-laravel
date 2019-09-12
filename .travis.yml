@@ -3,19 +3,11 @@ language: php
 php:
   - 7.2
   - 7.3
-  - nightly
-  - hhvm
 
 env:
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS=""
-
-matrix:
-  allow_failures:
-    - php: nightly
-    - php: hhvm
-
 
 before_script:
   - composer self-update
