@@ -34,7 +34,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
     /**
      * Dispatches an event to all registered listeners.
      *
-     * @param object $event The event to pass to the event handlers/listeners.
+     * @param object|null $event The event to pass to the event handlers/listeners.
      *                          If not supplied, an empty Event instance is created.
      *
      *
