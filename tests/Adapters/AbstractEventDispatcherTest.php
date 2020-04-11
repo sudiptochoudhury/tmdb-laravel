@@ -42,8 +42,8 @@ abstract class AbstractEventDispatcherTest extends TestCase
     /** @test */
     public function it_dispatches_events_through_both_laravel_and_symfony()
     {
-        $this->laravel->dispatch(static::EVENT, null)->shouldBeCalled();
-        $this->symfony->dispatch(static::EVENT, null)->shouldBeCalled();
+        $this->laravel->dispatch(null, static::EVENT)->shouldBeCalled();
+        $this->symfony->dispatch(null, static::EVENT)->shouldBeCalled();
 
         $this->dispatcher->dispatch(static::EVENT);
     }
@@ -51,8 +51,8 @@ abstract class AbstractEventDispatcherTest extends TestCase
     /** @test */
     public function it_adds_listeners_to_the_symfony_dispatcher()
     {
-        $this->dispatcher->addListener(static::EVENT, 'listener', 1);
-        $this->symfony->addListener(static::EVENT, 'listener', 1)->shouldHaveBeenCalled();
+        $this->dispatcher->addListener( 'listener', static::EVENT, 1);
+        $this->symfony->addListener('listener', static::EVENT, 1)->shouldHaveBeenCalled();
     }
 
     /** @test */
@@ -66,8 +66,8 @@ abstract class AbstractEventDispatcherTest extends TestCase
     /** @test */
     public function it_removes_listeners_from_the_symfony_dispathcer()
     {
-        $this->dispatcher->removeListener(static::EVENT, 'listener');
-        $this->symfony->removeListener(static::EVENT, 'listener')->shouldHaveBeenCalled();
+        $this->dispatcher->removeListener('listener', static::EVENT);
+        $this->symfony->removeListener('listener', static::EVENT)->shouldHaveBeenCalled();
     }
 
     /** @test */
