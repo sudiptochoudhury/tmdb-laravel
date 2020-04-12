@@ -6,7 +6,6 @@
  */
 namespace Tmdb\Laravel\Adapters;
 
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface as SymfonyDispatcher;
 
@@ -21,7 +20,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
 
     /**
      * The Laravel Events Dispatcher
-     * @var \Illuminate\Contracts\Events\Dispatcher or \Illuminate\Events\Dispatcher
+     * @var \Illuminate\Contracts\Events\Dispatcher | \Illuminate\Events\Dispatcher
      */
     protected $laravelDispatcher;
 
@@ -48,6 +47,8 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
     {
         $this->laravelDispatcher->dispatch($event, $eventName);
         $this->symfonyDispatcher->dispatch($event, $eventName);
+
+        return $event;
     }
 
     /**
