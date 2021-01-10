@@ -8,13 +8,13 @@ namespace Tmdb\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use Tmdb\Laravel\TmdbServiceProviderLaravel5;
-use Tmdb\ApiToken;
 use Tmdb\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Tmdb\Laravel\Adapters\EventDispatcherAdapter;
 use Tmdb\Model\Configuration;
 use Tmdb\Repository\ConfigurationRepository;
+use Tmdb\Token\Api\ApiToken;
 
 class TmdbServiceProvider extends ServiceProvider
 {
@@ -83,7 +83,7 @@ class TmdbServiceProvider extends ServiceProvider
 
             // Register the client using the key and options from config
             $token = new ApiToken($config['api_key']);
-            return new Client($token, $options);
+            return new Client([$token, $options]);
         });
 
         // bind the configuration (used by the image helper)
