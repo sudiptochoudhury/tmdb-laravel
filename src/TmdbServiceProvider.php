@@ -82,8 +82,7 @@ class TmdbServiceProvider extends ServiceProvider
             $options['event_dispatcher'] = $this->app->make(EventDispatcherAdapter::class);
 
             // Register the client using the key and options from config
-            $token = new ApiToken($config['api_key']);
-            return new Client([$token, $options]);
+            return new Client(['api_token' => $config['api_key'], $options]);
         });
 
         // bind the configuration (used by the image helper)
