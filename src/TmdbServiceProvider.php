@@ -99,7 +99,7 @@ class TmdbServiceProvider extends ServiceProvider
     private function registerProvider()
     {
         $app = $this->app;
-        $this->provider = new TmdbServiceProviderLaravel5($app);
+        $this->provider = new TmdbServiceProviderLaravel($app);
     }
 
     /**
