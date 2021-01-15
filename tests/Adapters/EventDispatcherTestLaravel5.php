@@ -6,7 +6,7 @@
  */
 namespace Tmdb\Laravel\Adapters\Tests;
 
-use Tmdb\Laravel\Adapters\EventDispatcherLaravel5 as AdapterDispatcher;
+use Tmdb\Laravel\Adapters\EventDispatcherLaravel as AdapterDispatcher;
 
 class EventDispatcherTestLaravel5 extends AbstractEventDispatcherTest
 {

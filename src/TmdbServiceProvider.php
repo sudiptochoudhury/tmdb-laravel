@@ -79,11 +79,11 @@ class TmdbServiceProvider extends ServiceProvider
             $options = $config['options'];
 
             // Use an Event Dispatcher that uses the Laravel event dispatcher
-            $options['event_dispatcher'] = ['adapter' => $this->app->make(EventDispatcherAdapter::class)];
+            $options['event_dispatcher']['adapter'] = $this->app->make(EventDispatcherAdapter::class);
 
             // Register the client using the key and options from config
-            $token = new ApiToken($config['api_key']);
-            return new Client(['api_token' => $token, $options]);
+            $options['api_token'] = new ApiToken($config['api_key']);
+            return new Client([$options]);
         });
 
         // bind the configuration (used by the image helper)
