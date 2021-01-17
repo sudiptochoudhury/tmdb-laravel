@@ -7,7 +7,14 @@
 namespace Tmdb\Laravel;
 
 use Illuminate\Support\ServiceProvider;
-use Tmdb\Laravel\TmdbServiceProviderLaravel5;
+use Tmdb\Event\BeforeRequestEvent;
+use Tmdb\Event\Listener\Request\AcceptJsonRequestListener;
+use Tmdb\Event\Listener\Request\ApiTokenRequestListener;
+use Tmdb\Event\Listener\Request\ContentTypeJsonRequestListener;
+use Tmdb\Event\Listener\Request\UserAgentRequestListener;
+use Tmdb\Event\Listener\RequestListener;
+use Tmdb\Event\RequestEvent;
+use Tmdb\Laravel\TmdbServiceProviderLaravel;
 use Tmdb\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -76,20 +83,35 @@ class TmdbServiceProvider extends ServiceProvider
         // Setup default configurations for the Tmdb Client
         $this->app->singleton(Client::class, function() {
             $config = $this->provider->config();
-            $options = $config['options'];
 
-            // Use an Event Dispatcher that uses the Laravel event dispatcher
-            $options['event_dispatcher']['adapter'] = $this->app->make(EventDispatcherAdapter::class);
+            $ed = $this->app->make(EventDispatcherAdapter::class);
+            $client = new Client(
+                [
+                    'api_token' => new ApiToken($config['api_key']),
+                    'event_dispatcher' =>
+                        [
+                            'adapter' => $ed
+                        ],
+                ]
+            );
+            /**
+             * Required event listeners and events to be registered with the PSR-14 Event Dispatcher.
+             */
+            $requestListener = new RequestListener($client->getHttpClient(), $ed);
+            $ed->addListener(RequestEvent::class, $requestListener);
 
-            // Register the client using the key and options from config
-            $options['api_token'] = new ApiToken($config['api_key']);
-            return new Client([$options]);
-        });
+            $apiTokenListener = new ApiTokenRequestListener($client->getToken());
+            $ed->addListener(BeforeRequestEvent::class, $apiTokenListener);
 
-        // bind the configuration (used by the image helper)
-        $this->app->bind(Configuration::class, function() {
-            $configuration = $this->app->make(ConfigurationRepository::class);
-            return $configuration->load();
+            $acceptJsonListener = new AcceptJsonRequestListener();
+            $ed->addListener(BeforeRequestEvent::class, $acceptJsonListener);
+
+            $jsonContentTypeListener = new ContentTypeJsonRequestListener();
+            $ed->addListener(BeforeRequestEvent::class, $jsonContentTypeListener);
+
+            $userAgentListener = new UserAgentRequestListener();
+            $ed->addListener(BeforeRequestEvent::class, $userAgentListener);
+            return $client;
         });
     }
 
