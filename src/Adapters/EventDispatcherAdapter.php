@@ -109,7 +109,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      *
      * @return array The event listeners for the specified event, or all event listeners by event name
      */
-    public function getListeners(string $eventName = null)
+    public function getListeners(string $eventName = null): array
     {
         return $this->symfonyDispatcher->getListeners($eventName);
     }
@@ -121,7 +121,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      *
      * @return bool true if the specified event has any listeners, false otherwise
      */
-    public function hasListeners(string $eventName = null)
+    public function hasListeners(string $eventName = null): bool
     {
         return ($this->symfonyDispatcher->hasListeners($eventName) ||
             $this->laravelDispatcher->hasListeners($eventName));
@@ -137,7 +137,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      *
      * @return int|null The event listener priority
      */
-    public function getListenerPriority($eventName, $listener)
+    public function getListenerPriority($eventName, $listener): ?int
     {
         return $this->symfonyDispatcher->getListenerPriority($eventName, $listener);
     }
