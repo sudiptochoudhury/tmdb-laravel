@@ -76,7 +76,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      *
      * @api
      */
-    public function addSubscriber(EventSubscriberInterface $subscriber)
+    public function addSubscriber(EventSubscriberInterface $subscriber): void
     {
         $this->symfonyDispatcher->addSubscriber($subscriber);
     }
@@ -87,7 +87,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      * @param string   $eventName The event to remove a listener from
      * @param callable $listenerToBeRemoved The listener to remove
      */
-    public function removeListener(string $eventName, callable $listenerToBeRemoved)
+    public function removeListener(string $eventName, callable $listenerToBeRemoved): void
     {
         $this->symfonyDispatcher->removeListener($eventName, $listenerToBeRemoved);
     }
@@ -97,7 +97,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      *
      * @param EventSubscriberInterface $subscriber The subscriber
      */
-    public function removeSubscriber(EventSubscriberInterface $subscriber)
+    public function removeSubscriber(EventSubscriberInterface $subscriber): void
     {
         $this->symfonyDispatcher->removeSubscriber($subscriber);
     }
