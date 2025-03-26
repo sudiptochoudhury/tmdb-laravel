@@ -12,7 +12,7 @@
     "require": {
         "php": ">=8.0",
         "illuminate/support": "^8.0|^9.0|^10.0|^11.0|^12.0",
-        "php-tmdb/api": "^4.0",
+        "php-tmdb/api": "^5.0",
         "nyholm/psr7": "^1.8",
         "guzzlehttp/guzzle": "^7.2"
     },
@@ -24,6 +24,12 @@
         "doctrine/cache": "^2.2",
         "monolog/monolog": "^3.0"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/DariusIII/tmdbapi"
+        }
+    ],
     "suggest": {
         "doctrine/cache": "Required if you want to make use of caching features.",
         "monolog/monolog": "Required if you want to make use of logging features."
