@@ -49,5 +49,10 @@
                 "Tmdb": "Tmdb\\Laravel\\Facades\\Tmdb"
             }
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     }
 }
