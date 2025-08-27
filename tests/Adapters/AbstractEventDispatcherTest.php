@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Tmdb\Laravel\Adapters\Tests;
+namespace Tests\Tmdb\Laravel\Adapters;
 
+use Prophecy\PhpUnit\ProphecyTrait;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Prophecy\Prophecy\MethodProphecy;
 
 abstract class AbstractEventDispatcherTest extends TestCase
 {
+    use ProphecyTrait;
+
     public const EVENT = 'foo';
 
     /**
@@ -42,17 +42,18 @@ abstract class AbstractEventDispatcherTest extends TestCase
     /** @test */
     public function it_dispatches_events_through_both_laravel_and_symfony()
     {
-        $this->laravel->dispatch(null, static::EVENT)->shouldBeCalled();
-        $this->symfony->dispatch(null, static::EVENT)->shouldBeCalled();
+        $event = new GenericEvent();
+        $this->laravel->dispatch($event, static::EVENT)->shouldBeCalled();
+        $this->symfony->dispatch($event, static::EVENT)->shouldBeCalled();
 
-        $this->dispatcher->dispatch(null, static::EVENT);
+        $this->dispatcher->dispatch($event, static::EVENT);
     }
 
     /** @test */
     public function it_adds_listeners_to_the_symfony_dispatcher()
     {
-        $this->dispatcher->addListener( static::EVENT, 'listener', 1);
-        $this->symfony->addListener(static::EVENT, 'listener', 1)->shouldHaveBeenCalled();
+        $this->dispatcher->addListener(static::EVENT, [$this, 'listener'], 1);
+        $this->symfony->addListener(static::EVENT, [$this, 'listener'], 1)->shouldHaveBeenCalled();
     }
 
     /** @test */
@@ -66,8 +67,8 @@ abstract class AbstractEventDispatcherTest extends TestCase
     /** @test */
     public function it_removes_listeners_from_the_symfony_dispathcer()
     {
-        $this->dispatcher->removeListener(static::EVENT, 'listener');
-        $this->symfony->removeListener(static::EVENT)->shouldHaveBeenCalled();
+        $this->dispatcher->removeListener(static::EVENT, [$this, 'listener']);
+        $this->symfony->removeListener(static::EVENT, [$this, 'listener'])->shouldHaveBeenCalled();
     }
 
     /** @test */
@@ -117,7 +118,7 @@ abstract class AbstractEventDispatcherTest extends TestCase
      */
     public function it_asks_the_symfony_dispatcher_for_a_listeners_priority()
     {
-        $this->symfony->getListenerPriority(static::EVENT, 'listener')->willReturn(100);
-        $this->assertEquals(100, $this->dispatcher->getListenerPriority(static::EVENT, 'listener'));
+        $this->symfony->getListenerPriority(static::EVENT, [$this, 'listener'])->willReturn(100);
+        $this->assertEquals(100, $this->dispatcher->getListenerPriority(static::EVENT, [$this, 'listener']));
     }
 }

@@ -14,14 +14,13 @@ use Tmdb\Event\Listener\Request\ContentTypeJsonRequestListener;
 use Tmdb\Event\Listener\Request\UserAgentRequestListener;
 use Tmdb\Event\Listener\RequestListener;
 use Tmdb\Event\RequestEvent;
-use Tmdb\Laravel\TmdbServiceProviderLaravel;
 use Tmdb\Client;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Tmdb\Laravel\Adapters\EventDispatcherAdapter;
-use Tmdb\Model\Configuration;
-use Tmdb\Repository\ConfigurationRepository;
 use Tmdb\Token\Api\ApiToken;
+use Psr\SimpleCache\CacheInterface;
+use Tmdb\Laravel\Listener\Psr16CachedRequestListener;
 
 class TmdbServiceProvider extends ServiceProvider
 {
@@ -86,13 +85,16 @@ class TmdbServiceProvider extends ServiceProvider
 
             $ed = $this->app->make(EventDispatcherAdapter::class);
             $client = new Client(
-                [
-                    'api_token' => new ApiToken($config['api_key']),
-                    'event_dispatcher' =>
-                        [
-                            'adapter' => $ed
-                        ],
-                ]
+                array_merge(
+                    [
+                        'api_token' => new ApiToken($config['api_key']),
+                        'event_dispatcher' =>
+                            [
+                                'adapter' => $ed
+                            ],
+                    ],
+                    $config['client'] ?? []
+                )
             );
             /**
              * Required event listeners and events to be registered with the PSR-14 Event Dispatcher.
@@ -111,6 +113,24 @@ class TmdbServiceProvider extends ServiceProvider
 
             $userAgentListener = new UserAgentRequestListener();
             $ed->addListener(BeforeRequestEvent::class, $userAgentListener);
+
+            $cacheConfig = $config['cache'] ?? true;
+            if ($cacheConfig === true) {
+                $cacheConfig = [
+                    'defaultTtl' => null,
+                    'enabled' => true,
+                ];
+            }
+            $useCache = ($cacheConfig['enabled'] ?? null) === true;
+            if ($useCache !== false) {
+                $cacherInterface = $this->app->make(CacheInterface::class);
+                $cacheListener = new Psr16CachedRequestListener(
+                    $cacherInterface,
+                    $cacheConfig['defaultTtl'] ?? null,
+                );
+                $ed->addSubscriber($cacheListener);
+            }
+
             return $client;
         });
     }

@@ -4,11 +4,11 @@
  * @author Mark Redeman <markredeman@gmail.com>
  * @copyright (c) 2014, Mark Redeman
  */
-namespace Tmdb\Laravel\Adapters\Tests;
+namespace Tests\Tmdb\Laravel\Adapters;
 
 use Tmdb\Laravel\Adapters\EventDispatcherLaravel as AdapterDispatcher;
 
-class EventDispatcherTestLaravel5 extends AbstractEventDispatcherTest
+class EventDispatcherTest extends AbstractEventDispatcherTest
 {
     protected function createEventDispatcher()
     {

@@ -55,13 +55,13 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      * Adds an event listener that listens on the specified events.
      *
      * @param string   $eventName The event to listen on
-     * @param callable $listener  The listener
+     * @param callable|array $listener  The listener
      * @param int      $priority  The higher this value, the earlier an event
      *                            listener will be triggered in the chain (defaults to 0)
      *
      * @api
      */
-    public function addListener(string $eventName, callable $listener, int $priority = 0): void
+    public function addListener(string $eventName, callable|array $listener, int $priority = 0): void
     {
         $this->symfonyDispatcher->addListener($eventName, $listener, $priority);
     }
@@ -85,9 +85,9 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      * Removes an event listener from the specified events.
      *
      * @param string   $eventName The event to remove a listener from
-     * @param callable $listenerToBeRemoved The listener to remove
+     * @param callable|array $listenerToBeRemoved The listener to remove
      */
-    public function removeListener(string $eventName, callable $listenerToBeRemoved): void
+    public function removeListener(string $eventName, callable|array $listenerToBeRemoved): void
     {
         $this->symfonyDispatcher->removeListener($eventName, $listenerToBeRemoved);
     }
@@ -133,7 +133,7 @@ abstract class EventDispatcherAdapter implements SymfonyDispatcher
      * Returns null if the event or the listener does not exist.
      *
      * @param string   $eventName The name of the event
-     * @param callable $listener  The listener
+     * @param callable|array $listener  The listener
      *
      * @return int|null The event listener priority
      */

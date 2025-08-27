@@ -9,4 +9,12 @@ return [
      * Api key
      */
     'api_key' => '',
+    // 'cache' => true,
+    'cache' => [
+        'defaultTtl' => null,
+        'enabled' => true,
+    ],
+    'client' => [
+        'secure' => true,
+    ],
 ];

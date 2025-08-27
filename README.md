@@ -24,18 +24,18 @@ $ sudo mv composer.phar /usr/local/bin/composer
 Add the following to your require block in `composer.json` config
 
 ```
-"dariusiii/tmdb-laravel": "^2.0"
+"sudiptochoudhury/tmdb-laravel": "^2.1"
 ```
 
 or just run the following command in your project:
 
 ```
-composer require dariusiii/tmdb-laravel
+composer require sudiptochoudhury/tmdb-laravel
 ```
 
 ## Configuration
 
-Add `config/app.php` (Laravel <5.5) the service provider:
+Add `config/app.php` (Laravel <= 8) the service provider:
 
 ```php
 'providers' => array(
