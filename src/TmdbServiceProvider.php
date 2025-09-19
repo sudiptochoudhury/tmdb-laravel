@@ -21,6 +21,7 @@ use Tmdb\Laravel\Adapters\EventDispatcherAdapter;
 use Tmdb\Token\Api\ApiToken;
 use Psr\SimpleCache\CacheInterface;
 use Tmdb\Laravel\Listener\Psr16CachedRequestListener;
+use GuzzleHttp\Psr7\HttpFactory;
 
 class TmdbServiceProvider extends ServiceProvider
 {
@@ -123,9 +124,12 @@ class TmdbServiceProvider extends ServiceProvider
             }
             $useCache = ($cacheConfig['enabled'] ?? null) === true;
             if ($useCache !== false) {
+                $httpFactory = new HttpFactory();
                 $cacherInterface = $this->app->make(CacheInterface::class);
                 $cacheListener = new Psr16CachedRequestListener(
                     $cacherInterface,
+                    $httpFactory,
+                    $httpFactory,
                     $cacheConfig['defaultTtl'] ?? null,
                 );
                 $ed->addSubscriber($cacheListener);
