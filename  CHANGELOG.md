@@ -1,5 +1,9 @@
 # Change Log
 
+## 12.1.2 - 24 Apr 2026
+- Revert back to using official php-tmdb/api
+
+
 ## 12.1.1 - 19 Sep 2025
 - Fix caching
 
